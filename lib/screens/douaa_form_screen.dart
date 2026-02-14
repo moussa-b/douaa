@@ -59,7 +59,7 @@ class _DouaaFormScreenState extends ConsumerState<DouaaFormScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(_isEditing ? 'Edit Douaa' : 'New Douaa'),
+        title: Text(_isEditing ? 'Modifier l\'invocation' : 'Nouvelle invocation'),
         actions: [
           TextButton.icon(
             onPressed: _saving ? null : _save,
@@ -70,7 +70,7 @@ class _DouaaFormScreenState extends ConsumerState<DouaaFormScreen> {
                     child: CircularProgressIndicator(strokeWidth: 2),
                   )
                 : const Icon(Icons.check),
-            label: const Text('Save'),
+            label: const Text('Enregistrer'),
           ),
         ],
       ),
@@ -82,7 +82,7 @@ class _DouaaFormScreenState extends ConsumerState<DouaaFormScreen> {
             // Sub-category dropdown
             subCategoriesAsync.when(
               loading: () => const LinearProgressIndicator(),
-              error: (error, _) => Text('Error loading sub-categories: $error'),
+              error: (error, _) => Text('Erreur lors du chargement des sous-catégories : $error'),
               data: (subCategories) => _buildSubCategoryField(subCategories),
             ),
 
@@ -94,8 +94,8 @@ class _DouaaFormScreenState extends ConsumerState<DouaaFormScreen> {
               child: TextFormField(
                 controller: _arabicController,
                 decoration: const InputDecoration(
-                  labelText: 'Arabic Text *',
-                  hintText: 'Enter douaa in Arabic',
+                  labelText: 'Texte arabe *',
+                  hintText: 'Saisir l\'invocation en arabe',
                   alignLabelWithHint: true,
                 ),
                 textDirection: TextDirection.rtl,
@@ -108,7 +108,7 @@ class _DouaaFormScreenState extends ConsumerState<DouaaFormScreen> {
                 ),
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {
-                    return 'Arabic text is required';
+                    return 'Le texte arabe est obligatoire';
                   }
                   return null;
                 },
@@ -121,8 +121,8 @@ class _DouaaFormScreenState extends ConsumerState<DouaaFormScreen> {
             TextFormField(
               controller: _frenchController,
               decoration: const InputDecoration(
-                labelText: 'French Translation',
-                hintText: 'Enter translation in French',
+                labelText: 'Traduction française',
+                hintText: 'Saisir la traduction en français',
                 alignLabelWithHint: true,
               ),
               maxLines: 4,
@@ -135,8 +135,8 @@ class _DouaaFormScreenState extends ConsumerState<DouaaFormScreen> {
             TextFormField(
               controller: _referenceController,
               decoration: const InputDecoration(
-                labelText: 'Reference',
-                hintText: 'e.g. Bukhari, Muslim, Coran 2:255',
+                labelText: 'Référence',
+                hintText: 'ex. Boukhari, Mouslim, Coran 2:255',
               ),
             ),
 
@@ -146,8 +146,8 @@ class _DouaaFormScreenState extends ConsumerState<DouaaFormScreen> {
             TextFormField(
               controller: _tagsController,
               decoration: const InputDecoration(
-                labelText: 'Tags',
-                hintText: 'e.g. morning, evening, prayer',
+                labelText: 'Étiquettes',
+                hintText: 'ex. matin, soir, prière',
               ),
             ),
 
@@ -156,7 +156,7 @@ class _DouaaFormScreenState extends ConsumerState<DouaaFormScreen> {
               OutlinedButton.icon(
                 onPressed: _saving ? null : _showDeleteDouaaDialog,
                 icon: const Icon(Icons.delete_outline),
-                label: const Text('Delete this douaa'),
+                label: const Text('Supprimer cette invocation'),
                 style: OutlinedButton.styleFrom(
                   foregroundColor: Theme.of(context).colorScheme.error,
                   side: BorderSide(color: Theme.of(context).colorScheme.error),
@@ -181,12 +181,12 @@ class _DouaaFormScreenState extends ConsumerState<DouaaFormScreen> {
             value: _selectedSubCategoryId,
             isExpanded: true,
             decoration: const InputDecoration(
-              labelText: 'Sub-category',
+              labelText: 'Sous-catégorie',
             ),
             items: [
               const DropdownMenuItem<int?>(
                 value: null,
-                child: Text('None'),
+                child: Text('Aucune'),
               ),
               ...subCategories.map(
                 (sc) => DropdownMenuItem<int?>(
@@ -206,7 +206,7 @@ class _DouaaFormScreenState extends ConsumerState<DouaaFormScreen> {
           child: IconButton.filled(
             onPressed: () => _showAddSubCategoryDialog(),
             icon: const Icon(Icons.add),
-            tooltip: 'New sub-category',
+            tooltip: 'Nouvelle sous-catégorie',
           ),
         ),
       ],
@@ -219,19 +219,19 @@ class _DouaaFormScreenState extends ConsumerState<DouaaFormScreen> {
       builder: (context) {
         final colorScheme = Theme.of(context).colorScheme;
         return AlertDialog(
-          title: const Text('Delete Douaa'),
+          title: const Text('Supprimer l\'invocation'),
           content: const Text(
-            'Delete this douaa? This cannot be undone.',
+            'Supprimer cette invocation ? Cette action est irréversible.',
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(false),
-              child: const Text('Cancel'),
+              child: const Text('Annuler'),
             ),
             FilledButton(
               onPressed: () => Navigator.of(context).pop(true),
               style: FilledButton.styleFrom(backgroundColor: colorScheme.error),
-              child: const Text('Delete'),
+              child: const Text('Supprimer'),
             ),
           ],
         );
@@ -297,7 +297,7 @@ class _DouaaFormScreenState extends ConsumerState<DouaaFormScreen> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error saving douaa: $e')),
+          SnackBar(content: Text('Erreur lors de l\'enregistrement : $e')),
         );
       }
     } finally {
@@ -333,13 +333,13 @@ class _AddSubCategoryDialogState extends State<_AddSubCategoryDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('New Sub-category'),
+      title: const Text('Nouvelle sous-catégorie'),
       content: TextField(
         controller: _controller,
         autofocus: true,
         decoration: const InputDecoration(
-          labelText: 'Sub-category name',
-          hintText: 'Enter sub-category name',
+          labelText: 'Nom de la sous-catégorie',
+          hintText: 'Saisir le nom de la sous-catégorie',
         ),
         textCapitalization: TextCapitalization.sentences,
         onSubmitted: (value) {
@@ -351,7 +351,7 @@ class _AddSubCategoryDialogState extends State<_AddSubCategoryDialog> {
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: const Text('Cancel'),
+          child: const Text('Annuler'),
         ),
         FilledButton(
           onPressed: () {
@@ -360,7 +360,7 @@ class _AddSubCategoryDialogState extends State<_AddSubCategoryDialog> {
               Navigator.of(context).pop(text);
             }
           },
-          child: const Text('Add'),
+          child: const Text('Ajouter'),
         ),
       ],
     );

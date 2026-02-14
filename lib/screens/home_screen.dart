@@ -22,7 +22,7 @@ class HomeScreen extends ConsumerWidget {
         actions: [
           IconButton(
             icon: Icon(isGrid ? Icons.view_list : Icons.grid_view),
-            tooltip: isGrid ? 'Switch to list' : 'Switch to grid',
+            tooltip: isGrid ? 'Passer en liste' : 'Passer en grille',
             onPressed: () {
               ref.read(viewModeProvider.notifier).toggle();
             },
@@ -35,11 +35,11 @@ class HomeScreen extends ConsumerWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text('Error: $error'),
+              Text('Erreur : $error'),
               const SizedBox(height: 8),
               FilledButton(
                 onPressed: () => ref.invalidate(categoryListProvider),
-                child: const Text('Retry'),
+                child: const Text('Réessayer'),
               ),
             ],
           ),
@@ -57,14 +57,14 @@ class HomeScreen extends ConsumerWidget {
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    'No categories yet',
+                    'Aucune catégorie pour l\'instant',
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           color: Theme.of(context).colorScheme.outline,
                         ),
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Tap + to create your first category',
+                    'Appuyez sur + pour créer votre première catégorie',
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: Theme.of(context).colorScheme.outline,
                         ),
@@ -122,7 +122,7 @@ class HomeScreen extends ConsumerWidget {
       floatingActionButton: FloatingActionButton(
         heroTag: 'home_fab',
         onPressed: () => _showAddCategoryDialog(context, ref),
-        tooltip: 'Add Category',
+        tooltip: 'Ajouter une catégorie',
         child: const Icon(Icons.add),
       ),
     );
@@ -158,18 +158,18 @@ class HomeScreen extends ConsumerWidget {
     final confirm = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Delete Category'),
+        title: const Text('Supprimer la catégorie'),
         content: Text(
-          'Delete "$name" and all its douaa? This cannot be undone.',
+          'Supprimer « $name » et toutes ses invocations ? Cette action est irréversible.',
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Cancel'),
+            child: const Text('Annuler'),
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop(true),
-            child: const Text('Delete'),
+            child: const Text('Supprimer'),
           ),
         ],
       ),

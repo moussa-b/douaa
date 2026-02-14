@@ -116,7 +116,7 @@ class DouaaCard extends StatelessWidget {
                   ),
                   onPressed: onFavoriteToggle,
                   tooltip:
-                      douaa.isFavorite ? 'Remove from favorites' : 'Add to favorites',
+                      douaa.isFavorite ? 'Retirer des favoris' : 'Ajouter aux favoris',
                 ),
               ),
             ],
@@ -143,16 +143,16 @@ class DouaaCard extends StatelessWidget {
           return await showDialog<bool>(
             context: context,
             builder: (context) => AlertDialog(
-              title: const Text('Delete Douaa'),
-              content: const Text('Are you sure you want to delete this douaa?'),
+              title: const Text('Supprimer l\'invocation'),
+              content: const Text('Êtes-vous sûr de vouloir supprimer cette invocation ?'),
               actions: [
                 TextButton(
                   onPressed: () => Navigator.of(context).pop(false),
-                  child: const Text('Cancel'),
+                  child: const Text('Annuler'),
                 ),
                 TextButton(
                   onPressed: () => Navigator.of(context).pop(true),
-                  child: const Text('Delete'),
+                  child: const Text('Supprimer'),
                 ),
               ],
             ),

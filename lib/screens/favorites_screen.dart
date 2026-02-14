@@ -17,11 +17,11 @@ class FavoritesScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Favorites'),
+        title: const Text('Favoris'),
         actions: [
           IconButton(
             icon: Icon(isGrid ? Icons.view_list : Icons.grid_view),
-            tooltip: isGrid ? 'Switch to list' : 'Switch to grid',
+            tooltip: isGrid ? 'Passer en liste' : 'Passer en grille',
             onPressed: () {
               ref.read(viewModeProvider.notifier).toggle();
             },
@@ -34,11 +34,11 @@ class FavoritesScreen extends ConsumerWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text('Error: $error'),
+              Text('Erreur : $error'),
               const SizedBox(height: 8),
               FilledButton(
                 onPressed: () => ref.invalidate(favoriteCategoriesProvider),
-                child: const Text('Retry'),
+                child: const Text('Réessayer'),
               ),
             ],
           ),
@@ -56,14 +56,14 @@ class FavoritesScreen extends ConsumerWidget {
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    'No favorites yet',
+                    'Aucun favori pour l\'instant',
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           color: Theme.of(context).colorScheme.outline,
                         ),
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Mark douaa as favorites to see them here',
+                    'Marquez des invocations en favori pour les voir ici',
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: Theme.of(context).colorScheme.outline,
                         ),

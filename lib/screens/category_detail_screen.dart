@@ -64,7 +64,7 @@ class _CategoryDetailScreenState extends ConsumerState<CategoryDetailScreen> {
           : FloatingActionButton(
               heroTag: 'detail_fab',
               onPressed: () => _openDouaaForm(context),
-              tooltip: 'Add Douaa',
+              tooltip: 'Ajouter une invocation',
               child: const Icon(Icons.add),
             ),
     );
@@ -75,7 +75,7 @@ class _CategoryDetailScreenState extends ConsumerState<CategoryDetailScreen> {
 
     return douaaAsync.when(
       loading: () => const Center(child: CircularProgressIndicator()),
-      error: (error, stack) => Center(child: Text('Error: $error')),
+      error: (error, stack) => Center(child: Text('Erreur : $error')),
       data: (douaaList) {
         if (douaaList.isEmpty) {
           return Center(
@@ -89,14 +89,14 @@ class _CategoryDetailScreenState extends ConsumerState<CategoryDetailScreen> {
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  'No douaa yet',
+                  'Aucune invocation pour l\'instant',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         color: Theme.of(context).colorScheme.outline,
                       ),
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Tap + to add your first douaa',
+                  'Appuyez sur + pour ajouter votre première invocation',
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: Theme.of(context).colorScheme.outline,
                       ),
@@ -128,7 +128,7 @@ class _CategoryDetailScreenState extends ConsumerState<CategoryDetailScreen> {
             ),
             const SizedBox(height: 16),
             Text(
-              'No favorite douaa in this category',
+              'Aucune invocation favorite dans cette catégorie',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     color: Theme.of(context).colorScheme.outline,
                   ),

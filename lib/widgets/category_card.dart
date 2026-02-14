@@ -40,46 +40,59 @@ class CategoryCard extends StatelessWidget {
                 ],
               ),
             ),
-            child: Center(
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      category.name,
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            color: colorScheme.onPrimaryContainer,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 18,
-                          ),
-                      textAlign: TextAlign.center,
-                      maxLines: 3,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    if ((subCategoryCount != null && subCategoryCount! > 0) ||
-                        (douaaCount != null && douaaCount! > 0)) ...[
-                      const SizedBox(height: 6),
-                      Text(
-                        [
-                          if (subCategoryCount != null && subCategoryCount! > 0)
-                            '$subCategoryCount subcategory',
-                          if (douaaCount != null && douaaCount! > 0)
-                            '$douaaCount douaa',
-                        ].join(' · '),
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: colorScheme.onPrimaryContainer
-                                  .withAlpha(180),
-                              fontSize: 11,
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    category.name,
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleMedium
+                        ?.copyWith(
+                          color: colorScheme.onPrimaryContainer,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 18,
+                        ),
+                    textAlign: TextAlign.center,
+                  ),
+                        if ((subCategoryCount != null &&
+                                subCategoryCount! > 0) ||
+                            (douaaCount != null && douaaCount! > 0)) ...[
+                          const SizedBox(height: 6),
+                          if (subCategoryCount != null &&
+                              subCategoryCount! > 0)
+                            Text(
+                              '$subCategoryCount sous-catégorie${subCategoryCount! > 1 ? 's' : ''}',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall
+                                  ?.copyWith(
+                                    color: colorScheme.onPrimaryContainer
+                                        .withAlpha(180),
+                                    fontSize: 11,
+                                  ),
+                              textAlign: TextAlign.center,
                             ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
-                  ],
-                ),
-              ),
-            ),
+                          if (douaaCount != null && douaaCount! > 0)
+                            Text(
+                              '$douaaCount invocation${douaaCount! > 1 ? 's' : ''}',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall
+                                  ?.copyWith(
+                                    color: colorScheme.onPrimaryContainer
+                                        .withAlpha(180),
+                                    fontSize: 11,
+                                  ),
+                              textAlign: TextAlign.center,
+                            ),
+                        ],
+                      ],
+                    ),
+                  ),
           ),
         ),
       );
@@ -97,16 +110,27 @@ class CategoryCard extends StatelessWidget {
               ),
         ),
         subtitle: hasCounts
-            ? Text(
-                [
+            ? Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
                   if (subCategoryCount != null && subCategoryCount! > 0)
-                    '$subCategoryCount subcategory',
-                  if (douaaCount != null && douaaCount! > 0) '$douaaCount douaa',
-                ].join(' · '),
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: colorScheme.onSurfaceVariant,
-                      fontSize: 12,
+                    Text(
+                      '$subCategoryCount sous-catégorie${subCategoryCount! > 1 ? 's' : ''}',
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: colorScheme.onSurfaceVariant,
+                            fontSize: 12,
+                          ),
                     ),
+                  if (douaaCount != null && douaaCount! > 0)
+                    Text(
+                      '$douaaCount invocation${douaaCount! > 1 ? 's' : ''}',
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: colorScheme.onSurfaceVariant,
+                            fontSize: 12,
+                          ),
+                    ),
+                ],
               )
             : null,
         trailing: Icon(

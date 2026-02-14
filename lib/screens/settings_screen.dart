@@ -13,7 +13,7 @@ class SettingsScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Settings'),
+        title: const Text('Paramètres'),
       ),
       body: ListView(
         children: [
@@ -23,7 +23,7 @@ class SettingsScreen extends ConsumerWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: Text(
-              'Display',
+              'Affichage',
               style: Theme.of(context).textTheme.titleSmall?.copyWith(
                     color: colorScheme.primary,
                     fontWeight: FontWeight.w600,
@@ -32,8 +32,8 @@ class SettingsScreen extends ConsumerWidget {
           ),
 
           SwitchListTile(
-            title: const Text('Show Reference'),
-            subtitle: const Text('Display hadith/quran references'),
+            title: const Text('Afficher la référence'),
+            subtitle: const Text('Afficher les références hadith/Coran'),
             value: settings.showReference,
             onChanged: (value) {
               ref.read(settingsProvider.notifier).setShowReference(value);
@@ -42,8 +42,8 @@ class SettingsScreen extends ConsumerWidget {
           ),
 
           SwitchListTile(
-            title: const Text('Show Translation'),
-            subtitle: const Text('Display French translation'),
+            title: const Text('Afficher la traduction'),
+            subtitle: const Text('Afficher la traduction française'),
             value: settings.showTranslation,
             onChanged: (value) {
               ref.read(settingsProvider.notifier).setShowTranslation(value);
@@ -57,7 +57,7 @@ class SettingsScreen extends ConsumerWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: Text(
-              'Behavior',
+              'Comportement',
               style: Theme.of(context).textTheme.titleSmall?.copyWith(
                     color: colorScheme.primary,
                     fontWeight: FontWeight.w600,
@@ -66,8 +66,8 @@ class SettingsScreen extends ConsumerWidget {
           ),
 
           SwitchListTile(
-            title: const Text('Keep Screen Awake'),
-            subtitle: const Text('Prevent screen from turning off'),
+            title: const Text('Garder l\'écran allumé'),
+            subtitle: const Text('Empêcher l\'écran de s\'éteindre'),
             value: settings.keepScreenAwake,
             onChanged: (value) {
               ref.read(settingsProvider.notifier).setKeepScreenAwake(value);
@@ -81,7 +81,7 @@ class SettingsScreen extends ConsumerWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: Text(
-              'About',
+              'À propos',
               style: Theme.of(context).textTheme.titleSmall?.copyWith(
                     color: colorScheme.primary,
                     fontWeight: FontWeight.w600,
@@ -97,7 +97,7 @@ class SettingsScreen extends ConsumerWidget {
                   : '...';
               return ListTile(
                 leading: const Icon(Icons.info_outline),
-                title: const Text('App Version'),
+                title: const Text('Version de l\'application'),
                 subtitle: Text(version),
               );
             },
