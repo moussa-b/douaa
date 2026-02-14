@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../database/database_helper.dart';
 import '../models/sub_category.dart';
+import 'category_provider.dart';
 
 final subCategoryListProvider =
     AsyncNotifierProvider.family<SubCategoryListNotifier, List<SubCategory>, int>(
@@ -23,12 +24,14 @@ class SubCategoryListNotifier extends AsyncNotifier<List<SubCategory>> {
       SubCategory(name: name, categoryId: categoryId),
     );
     state = AsyncData(await _db.getSubCategoriesByCategoryId(categoryId));
+    ref.invalidate(categoryCountsProvider);
     return id;
   }
 
   Future<void> deleteSubCategory(int id) async {
     await _db.deleteSubCategory(id);
     state = AsyncData(await _db.getSubCategoriesByCategoryId(categoryId));
+    ref.invalidate(categoryCountsProvider);
   }
 
   Future<void> refresh() async {

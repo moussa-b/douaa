@@ -117,6 +117,27 @@ class DatabaseHelper {
     return await db.delete('category', where: 'id = ?', whereArgs: [id]);
   }
 
+  /// Returns for each category id: sub_category count and douaa count.
+  Future<Map<int, ({int subCount, int douaaCount})>> getCategoryCounts() async {
+    final db = await database;
+    final maps = await db.rawQuery('''
+      SELECT c.id,
+        (SELECT COUNT(*) FROM sub_category sc WHERE sc.category_id = c.id) AS sub_count,
+        (SELECT COUNT(*) FROM douaa d WHERE d.category_id = c.id) AS douaa_count
+      FROM category c
+    ''');
+    final result = <int, ({int subCount, int douaaCount})>{};
+    for (final m in maps) {
+      final id = m['id'] as int?;
+      if (id == null) continue;
+      result[id] = (
+        subCount: m['sub_count'] as int? ?? 0,
+        douaaCount: m['douaa_count'] as int? ?? 0,
+      );
+    }
+    return result;
+  }
+
   // ── SubCategory CRUD ──
 
   Future<int> insertSubCategory(SubCategory subCategory) async {

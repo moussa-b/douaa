@@ -11,7 +11,9 @@ class FavoritesScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final favCategoriesAsync = ref.watch(favoriteCategoriesProvider);
+    final countsAsync = ref.watch(categoryCountsProvider);
     final isGrid = ref.watch(viewModeProvider);
+    final counts = countsAsync.value ?? {};
 
     return Scaffold(
       appBar: AppBar(
@@ -83,9 +85,12 @@ class FavoritesScreen extends ConsumerWidget {
               itemCount: categories.length,
               itemBuilder: (context, index) {
                 final category = categories[index];
+                final c = category.id != null ? counts[category.id] : null;
                 return CategoryCard(
                   category: category,
                   isGrid: true,
+                  subCategoryCount: c?.subCount,
+                  douaaCount: c?.douaaCount,
                   onTap: () => _openCategory(
                     context,
                     category.id!,
@@ -101,9 +106,12 @@ class FavoritesScreen extends ConsumerWidget {
             itemCount: categories.length,
             itemBuilder: (context, index) {
               final category = categories[index];
+              final c = category.id != null ? counts[category.id] : null;
               return CategoryCard(
                 category: category,
                 isGrid: false,
+                subCategoryCount: c?.subCount,
+                douaaCount: c?.douaaCount,
                 onTap: () => _openCategory(
                   context,
                   category.id!,

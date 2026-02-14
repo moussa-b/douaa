@@ -8,6 +8,20 @@ final categoryListProvider =
   CategoryListNotifier.new,
 );
 
+final categoryCountsProvider =
+    AsyncNotifierProvider<CategoryCountsNotifier,
+        Map<int, ({int subCount, int douaaCount})>>(CategoryCountsNotifier.new);
+
+class CategoryCountsNotifier
+    extends AsyncNotifier<Map<int, ({int subCount, int douaaCount})>> {
+  final _db = DatabaseHelper();
+
+  @override
+  FutureOr<Map<int, ({int subCount, int douaaCount})>> build() async {
+    return await _db.getCategoryCounts();
+  }
+}
+
 class CategoryListNotifier extends AsyncNotifier<List<Category>> {
   final _db = DatabaseHelper();
 
@@ -19,20 +33,22 @@ class CategoryListNotifier extends AsyncNotifier<List<Category>> {
   Future<void> addCategory(String name) async {
     await _db.insertCategory(Category(name: name));
     state = AsyncData(await _db.getCategories());
-    // Also refresh favorites in case it's relevant
     ref.invalidate(favoriteCategoriesProvider);
+    ref.invalidate(categoryCountsProvider);
   }
 
   Future<void> updateCategory(Category category) async {
     await _db.updateCategory(category);
     state = AsyncData(await _db.getCategories());
     ref.invalidate(favoriteCategoriesProvider);
+    ref.invalidate(categoryCountsProvider);
   }
 
   Future<void> deleteCategory(int id) async {
     await _db.deleteCategory(id);
     state = AsyncData(await _db.getCategories());
     ref.invalidate(favoriteCategoriesProvider);
+    ref.invalidate(categoryCountsProvider);
   }
 
   Future<void> refresh() async {

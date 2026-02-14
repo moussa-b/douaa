@@ -12,7 +12,9 @@ class HomeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final categoriesAsync = ref.watch(categoryListProvider);
+    final countsAsync = ref.watch(categoryCountsProvider);
     final isGrid = ref.watch(viewModeProvider);
+    final counts = countsAsync.value ?? {};
 
     return Scaffold(
       appBar: AppBar(
@@ -84,9 +86,12 @@ class HomeScreen extends ConsumerWidget {
               itemCount: categories.length,
               itemBuilder: (context, index) {
                 final category = categories[index];
+                final c = category.id != null ? counts[category.id] : null;
                 return CategoryCard(
                   category: category,
                   isGrid: true,
+                  subCategoryCount: c?.subCount,
+                  douaaCount: c?.douaaCount,
                   onTap: () => _openCategory(context, category.id!, category.name),
                   onLongPress: () =>
                       _showDeleteDialog(context, ref, category.id!, category.name),
@@ -100,9 +105,12 @@ class HomeScreen extends ConsumerWidget {
             itemCount: categories.length,
             itemBuilder: (context, index) {
               final category = categories[index];
+              final c = category.id != null ? counts[category.id] : null;
               return CategoryCard(
                 category: category,
                 isGrid: false,
+                subCategoryCount: c?.subCount,
+                douaaCount: c?.douaaCount,
                 onTap: () => _openCategory(context, category.id!, category.name),
                 onLongPress: () =>
                     _showDeleteDialog(context, ref, category.id!, category.name),

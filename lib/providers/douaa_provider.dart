@@ -22,6 +22,7 @@ class DouaaListNotifier extends AsyncNotifier<List<Douaa>> {
   Future<void> addDouaa(Douaa douaa) async {
     await _db.insertDouaa(douaa);
     state = AsyncData(await _db.getDouaaByCategoryId(categoryId));
+    ref.invalidate(categoryCountsProvider);
   }
 
   Future<void> updateDouaa(Douaa douaa) async {
@@ -32,14 +33,15 @@ class DouaaListNotifier extends AsyncNotifier<List<Douaa>> {
   Future<void> toggleFavorite(int douaaId, bool isFavorite) async {
     await _db.toggleFavorite(douaaId, isFavorite);
     state = AsyncData(await _db.getDouaaByCategoryId(categoryId));
-    // Refresh favorite categories since a toggle may change them
     ref.invalidate(favoriteCategoriesProvider);
+    ref.invalidate(categoryCountsProvider);
   }
 
   Future<void> deleteDouaa(int id) async {
     await _db.deleteDouaa(id);
     state = AsyncData(await _db.getDouaaByCategoryId(categoryId));
     ref.invalidate(favoriteCategoriesProvider);
+    ref.invalidate(categoryCountsProvider);
   }
 
   Future<void> refresh() async {
