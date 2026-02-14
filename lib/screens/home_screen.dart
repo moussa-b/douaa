@@ -260,22 +260,26 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   ) async {
     final confirm = await showDialog<bool>(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Supprimer la catégorie'),
-        content: Text(
-          'Supprimer « $name » et toutes ses invocations ? Cette action est irréversible.',
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Annuler'),
+      builder: (context) {
+        final colorScheme = Theme.of(context).colorScheme;
+        return AlertDialog(
+          title: const Text('Supprimer la catégorie'),
+          content: Text(
+            'Supprimer « $name » et toutes ses invocations ? Cette action est irréversible.',
           ),
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(true),
-            child: const Text('Supprimer'),
-          ),
-        ],
-      ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: const Text('Annuler'),
+            ),
+            FilledButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              style: FilledButton.styleFrom(backgroundColor: colorScheme.error),
+              child: const Text('Supprimer'),
+            ),
+          ],
+        );
+      },
     );
     if (confirm == true) {
       await ref.read(categoryListProvider.notifier).deleteCategory(id);

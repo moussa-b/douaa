@@ -9,7 +9,6 @@ class SettingsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final settings = ref.watch(settingsProvider);
-    final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
       appBar: AppBar(
@@ -34,8 +33,8 @@ class SettingsScreen extends ConsumerWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: Text(
               'Affichage',
-              style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    color: colorScheme.primary,
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    color: const Color(0xFF0F3057),
                     fontWeight: FontWeight.w600,
                   ),
             ),
@@ -68,8 +67,8 @@ class SettingsScreen extends ConsumerWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: Text(
               'Comportement',
-              style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    color: colorScheme.primary,
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    color: const Color(0xFF0F3057),
                     fontWeight: FontWeight.w600,
                   ),
             ),
@@ -92,8 +91,8 @@ class SettingsScreen extends ConsumerWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: Text(
               'À propos',
-              style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    color: colorScheme.primary,
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    color: const Color(0xFF0F3057),
                     fontWeight: FontWeight.w600,
                   ),
             ),

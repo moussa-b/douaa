@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'screens/app_shell.dart';
 
+const Color _kSecondaryColor = Color(0xFF0F3057);
+
 class DouaaApp extends StatelessWidget {
   const DouaaApp({super.key});
 
@@ -14,7 +16,7 @@ class DouaaApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(
           seedColor: const Color(0xFF1B5E20), // Deep green
           brightness: Brightness.light,
-        ),
+        ).copyWith(secondary: _kSecondaryColor),
         useMaterial3: true,
         appBarTheme: const AppBarTheme(
           centerTitle: true,
@@ -28,8 +30,40 @@ class DouaaApp extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
           ),
         ),
+        switchTheme: SwitchThemeData(
+          thumbColor: WidgetStateProperty.resolveWith((Set<WidgetState> states) {
+            if (states.contains(WidgetState.selected)) return _kSecondaryColor;
+            return null;
+          }),
+          trackColor: WidgetStateProperty.resolveWith((Set<WidgetState> states) {
+            if (states.contains(WidgetState.selected)) {
+              return _kSecondaryColor.withValues(alpha: 0.5);
+            }
+            return null;
+          }),
+        ),
+        navigationBarTheme: NavigationBarThemeData(
+          indicatorColor: _kSecondaryColor,
+          iconTheme: WidgetStateProperty.resolveWith((Set<WidgetState> states) {
+            if (states.contains(WidgetState.selected)) {
+              return const IconThemeData(color: Colors.white);
+            }
+            return null;
+          }),
+          labelTextStyle: WidgetStateProperty.resolveWith((Set<WidgetState> states) {
+            if (states.contains(WidgetState.selected)) {
+              return TextStyle(
+                color: _kSecondaryColor,
+                fontWeight: FontWeight.w500,
+              );
+            }
+            return null;
+          }),
+        ),
         floatingActionButtonTheme: const FloatingActionButtonThemeData(
           elevation: 4,
+          backgroundColor: _kSecondaryColor,
+          foregroundColor: Colors.white,
         ),
         inputDecorationTheme: InputDecorationTheme(
           border: OutlineInputBorder(
