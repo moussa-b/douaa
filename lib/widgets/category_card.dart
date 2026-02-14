@@ -61,7 +61,9 @@ class CategoryCard extends StatelessWidget {
       child: ListTile(
         title: Text(
           category.name,
-          style: const TextStyle(fontWeight: FontWeight.w500),
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.w500,
+              ),
         ),
         trailing: Icon(
           Icons.chevron_right,

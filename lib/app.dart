@@ -10,6 +10,7 @@ class DouaaApp extends StatelessWidget {
       title: 'Douaa',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        fontFamily: 'ScheherazadeNew',
         colorScheme: ColorScheme.fromSeed(
           seedColor: const Color(0xFF1B5E20), // Deep green
           brightness: Brightness.light,

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/douaa.dart';
 import '../models/sub_category.dart';
 import '../providers/sub_category_provider.dart';
+import '../providers/douaa_provider.dart';
 import '../database/database_helper.dart';
 
 class DouaaFormScreen extends ConsumerStatefulWidget {
@@ -100,7 +101,11 @@ class _DouaaFormScreenState extends ConsumerState<DouaaFormScreen> {
                 textDirection: TextDirection.rtl,
                 maxLines: 5,
                 minLines: 3,
-                style: const TextStyle(fontSize: 18, height: 1.8),
+                style: const TextStyle(
+                  fontSize: 18,
+                  height: 1.8,
+                  fontFamily: 'ScheherazadeNew',
+                ),
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {
                     return 'Arabic text is required';
@@ -146,7 +151,21 @@ class _DouaaFormScreenState extends ConsumerState<DouaaFormScreen> {
               ),
             ),
 
-            const SizedBox(height: 32),
+            if (_isEditing) ...[
+              const SizedBox(height: 48),
+              OutlinedButton.icon(
+                onPressed: _saving ? null : _showDeleteDouaaDialog,
+                icon: const Icon(Icons.delete_outline),
+                label: const Text('Delete this douaa'),
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: Theme.of(context).colorScheme.error,
+                  side: BorderSide(color: Theme.of(context).colorScheme.error),
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                ),
+              ),
+              const SizedBox(height: 32),
+            ] else
+              const SizedBox(height: 32),
           ],
         ),
       ),
@@ -160,6 +179,7 @@ class _DouaaFormScreenState extends ConsumerState<DouaaFormScreen> {
         Expanded(
           child: DropdownButtonFormField<int?>(
             value: _selectedSubCategoryId,
+            isExpanded: true,
             decoration: const InputDecoration(
               labelText: 'Sub-category',
             ),
@@ -193,44 +213,45 @@ class _DouaaFormScreenState extends ConsumerState<DouaaFormScreen> {
     );
   }
 
+  Future<void> _showDeleteDouaaDialog() async {
+    final confirm = await showDialog<bool>(
+      context: context,
+      builder: (context) {
+        final colorScheme = Theme.of(context).colorScheme;
+        return AlertDialog(
+          title: const Text('Delete Douaa'),
+          content: const Text(
+            'Delete this douaa? This cannot be undone.',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: const Text('Cancel'),
+            ),
+            FilledButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              style: FilledButton.styleFrom(backgroundColor: colorScheme.error),
+              child: const Text('Delete'),
+            ),
+          ],
+        );
+      },
+    );
+    if (confirm == true && mounted) {
+      await ref
+          .read(douaaListProvider(widget.categoryId).notifier)
+          .deleteDouaa(widget.douaa!.id!);
+      if (mounted) {
+        Navigator.of(context).pop(true);
+      }
+    }
+  }
+
   Future<void> _showAddSubCategoryDialog() async {
-    final controller = TextEditingController();
     final name = await showDialog<String>(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('New Sub-category'),
-        content: TextField(
-          controller: controller,
-          autofocus: true,
-          decoration: const InputDecoration(
-            labelText: 'Sub-category name',
-            hintText: 'Enter sub-category name',
-          ),
-          textCapitalization: TextCapitalization.sentences,
-          onSubmitted: (value) {
-            if (value.trim().isNotEmpty) {
-              Navigator.of(context).pop(value.trim());
-            }
-          },
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Cancel'),
-          ),
-          FilledButton(
-            onPressed: () {
-              final text = controller.text.trim();
-              if (text.isNotEmpty) {
-                Navigator.of(context).pop(text);
-              }
-            },
-            child: const Text('Add'),
-          ),
-        ],
-      ),
+      builder: (context) => const _AddSubCategoryDialog(),
     );
-    controller.dispose();
 
     if (name != null && name.isNotEmpty) {
       final id = await ref
@@ -284,5 +305,64 @@ class _DouaaFormScreenState extends ConsumerState<DouaaFormScreen> {
         setState(() => _saving = false);
       }
     }
+  }
+}
+
+class _AddSubCategoryDialog extends StatefulWidget {
+  const _AddSubCategoryDialog();
+
+  @override
+  State<_AddSubCategoryDialog> createState() => _AddSubCategoryDialogState();
+}
+
+class _AddSubCategoryDialogState extends State<_AddSubCategoryDialog> {
+  late final TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text('New Sub-category'),
+      content: TextField(
+        controller: _controller,
+        autofocus: true,
+        decoration: const InputDecoration(
+          labelText: 'Sub-category name',
+          hintText: 'Enter sub-category name',
+        ),
+        textCapitalization: TextCapitalization.sentences,
+        onSubmitted: (value) {
+          if (value.trim().isNotEmpty) {
+            Navigator.of(context).pop(value.trim());
+          }
+        },
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: const Text('Cancel'),
+        ),
+        FilledButton(
+          onPressed: () {
+            final text = _controller.text.trim();
+            if (text.isNotEmpty) {
+              Navigator.of(context).pop(text);
+            }
+          },
+          child: const Text('Add'),
+        ),
+      ],
+    );
   }
 }
