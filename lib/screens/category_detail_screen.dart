@@ -56,9 +56,20 @@ class _CategoryDetailScreenState extends ConsumerState<CategoryDetailScreen> {
       appBar: AppBar(
         title: Text(widget.categoryName),
       ),
-      body: widget.favoritesOnly
-          ? _buildFavoritesBody(settings)
-          : _buildAllBody(settings),
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Color(0xFFEBFFFD), Colors.white],
+          ),
+        ),
+        child: widget.favoritesOnly
+            ? _buildFavoritesBody(settings)
+            : _buildAllBody(settings),
+      ),
       floatingActionButton: widget.favoritesOnly
           ? null
           : FloatingActionButton(
@@ -159,7 +170,7 @@ class _CategoryDetailScreenState extends ConsumerState<CategoryDetailScreen> {
               await _loadFavorites();
             }
           },
-          onTap: () => _openDouaaForm(context, douaa: douaa),
+          onEditTap: () => _openDouaaForm(context, douaa: douaa),
           onDismissed: () async {
             await ref
                 .read(douaaListProvider(widget.categoryId).notifier)

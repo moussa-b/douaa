@@ -26,19 +26,14 @@ class CategoryCard extends StatelessWidget {
     if (isGrid) {
       return Card(
         clipBehavior: Clip.antiAlias,
+        color: const Color(0xFF84E6DD),
+        surfaceTintColor: Colors.transparent,
         child: InkWell(
           onTap: onTap,
           onLongPress: onLongPress,
           child: Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  colorScheme.primaryContainer,
-                  colorScheme.primaryContainer.withAlpha(180),
-                ],
-              ),
+            decoration: const BoxDecoration(
+              color: Color(0xFF84E6DD),
             ),
             child: SingleChildScrollView(
               padding: const EdgeInsets.all(16),
@@ -102,6 +97,8 @@ class CategoryCard extends StatelessWidget {
     final hasCounts = (subCategoryCount != null && subCategoryCount! > 0) ||
         (douaaCount != null && douaaCount! > 0);
     return Card(
+      color: const Color(0xFF84E6DD),
+      surfaceTintColor: Colors.transparent,
       child: ListTile(
         title: Text(
           category.name,

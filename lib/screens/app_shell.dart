@@ -26,12 +26,16 @@ class _AppShellState extends State<AppShell> {
         index: _currentIndex,
         children: _screens,
       ),
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: _currentIndex,
-        onDestinationSelected: (index) {
-          setState(() => _currentIndex = index);
-        },
-        destinations: const [
+      bottomNavigationBar: Container(
+        color: Colors.white,
+        child: NavigationBar(
+          backgroundColor: Colors.white,
+          surfaceTintColor: Colors.transparent,
+          selectedIndex: _currentIndex,
+          onDestinationSelected: (index) {
+            setState(() => _currentIndex = index);
+          },
+          destinations: const [
           NavigationDestination(
             icon: Icon(Icons.home_outlined),
             selectedIcon: Icon(Icons.home),
@@ -48,6 +52,7 @@ class _AppShellState extends State<AppShell> {
             label: 'Paramètres',
           ),
         ],
+        ),
       ),
     );
   }

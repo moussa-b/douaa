@@ -6,30 +6,117 @@ import '../widgets/category_card.dart';
 import '../widgets/add_category_dialog.dart';
 import 'category_detail_screen.dart';
 
-class HomeScreen extends ConsumerWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends ConsumerState<HomeScreen> {
+  bool _isSearching = false;
+  final _searchController = TextEditingController();
+  final _searchFocusNode = FocusNode();
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    _searchFocusNode.dispose();
+    super.dispose();
+  }
+
+  void _startSearch() {
+    setState(() {
+      _isSearching = true;
+      _searchController.clear();
+    });
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _searchFocusNode.requestFocus();
+    });
+  }
+
+  void _endSearch() {
+    setState(() {
+      _isSearching = false;
+      _searchController.clear();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final categoriesAsync = ref.watch(categoryListProvider);
     final countsAsync = ref.watch(categoryCountsProvider);
     final isGrid = ref.watch(viewModeProvider);
     final counts = countsAsync.value ?? {};
+    final searchQuery = _searchController.text.trim().toLowerCase();
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Douaa'),
+        title: _isSearching
+            ? TextField(
+                controller: _searchController,
+                focusNode: _searchFocusNode,
+                autofocus: true,
+                decoration: InputDecoration(
+                  hintText: 'Rechercher une catégorie…',
+                  filled: true,
+                  fillColor: Theme.of(context).colorScheme.surfaceContainerLow,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(24),
+                  ),
+                  isDense: true,
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 8,
+                  ),
+                ),
+                onChanged: (_) => setState(() {}),
+              )
+            : const Text('Douaa'),
+        leading: _isSearching
+            ? IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: _endSearch,
+                tooltip: 'Fermer la recherche',
+              )
+            : null,
         actions: [
-          IconButton(
-            icon: Icon(isGrid ? Icons.view_list : Icons.grid_view),
-            tooltip: isGrid ? 'Passer en liste' : 'Passer en grille',
-            onPressed: () {
-              ref.read(viewModeProvider.notifier).toggle();
-            },
-          ),
+          if (_isSearching)
+            IconButton(
+              icon: const Icon(Icons.close),
+              onPressed: () {
+                _searchController.clear();
+                setState(() {});
+              },
+              tooltip: 'Effacer',
+            )
+          else
+            IconButton(
+              icon: const Icon(Icons.search),
+              tooltip: 'Rechercher par catégorie',
+              onPressed: _startSearch,
+            ),
+          if (!_isSearching)
+            IconButton(
+              icon: Icon(isGrid ? Icons.view_list : Icons.grid_view),
+              tooltip: isGrid ? 'Passer en liste' : 'Passer en grille',
+              onPressed: () {
+                ref.read(viewModeProvider.notifier).toggle();
+              },
+            ),
         ],
       ),
-      body: categoriesAsync.when(
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Color(0xFFEBFFFD), Colors.white],
+          ),
+        ),
+        child: categoriesAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (error, stack) => Center(
           child: Column(
@@ -45,26 +132,41 @@ class HomeScreen extends ConsumerWidget {
           ),
         ),
         data: (categories) {
-          if (categories.isEmpty) {
+          final filtered = searchQuery.isEmpty
+              ? categories
+              : categories
+                  .where((c) =>
+                      c.name.toLowerCase().contains(searchQuery))
+                  .toList();
+
+          if (filtered.isEmpty) {
+            final isSearchNoResults =
+                searchQuery.isNotEmpty && categories.isNotEmpty;
             return Center(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Icon(
-                    Icons.category_outlined,
+                    isSearchNoResults
+                        ? Icons.search_off
+                        : Icons.category_outlined,
                     size: 64,
                     color: Theme.of(context).colorScheme.outline,
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    'Aucune catégorie pour l\'instant',
+                    isSearchNoResults
+                        ? 'Aucun résultat'
+                        : 'Aucune catégorie pour l\'instant',
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           color: Theme.of(context).colorScheme.outline,
                         ),
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Appuyez sur + pour créer votre première catégorie',
+                    isSearchNoResults
+                        ? 'Aucune catégorie ne correspond à « ${_searchController.text.trim()} »'
+                        : 'Appuyez sur + pour créer votre première catégorie',
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: Theme.of(context).colorScheme.outline,
                         ),
@@ -83,9 +185,9 @@ class HomeScreen extends ConsumerWidget {
                 mainAxisSpacing: 8,
                 childAspectRatio: 1.3,
               ),
-              itemCount: categories.length,
+              itemCount: filtered.length,
               itemBuilder: (context, index) {
-                final category = categories[index];
+                final category = filtered[index];
                 final c = category.id != null ? counts[category.id] : null;
                 return CategoryCard(
                   category: category,
@@ -102,9 +204,9 @@ class HomeScreen extends ConsumerWidget {
 
           return ListView.builder(
             padding: const EdgeInsets.all(12),
-            itemCount: categories.length,
+            itemCount: filtered.length,
             itemBuilder: (context, index) {
-              final category = categories[index];
+              final category = filtered[index];
               final c = category.id != null ? counts[category.id] : null;
               return CategoryCard(
                 category: category,
@@ -118,6 +220,7 @@ class HomeScreen extends ConsumerWidget {
             },
           );
         },
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         heroTag: 'home_fab',

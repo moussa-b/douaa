@@ -74,7 +74,17 @@ class _DouaaFormScreenState extends ConsumerState<DouaaFormScreen> {
           ),
         ],
       ),
-      body: Form(
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Color(0xFFEBFFFD), Colors.white],
+          ),
+        ),
+        child: Form(
         key: _formKey,
         child: ListView(
           padding: const EdgeInsets.all(16),
@@ -167,6 +177,7 @@ class _DouaaFormScreenState extends ConsumerState<DouaaFormScreen> {
             ] else
               const SizedBox(height: 32),
           ],
+        ),
         ),
       ),
     );

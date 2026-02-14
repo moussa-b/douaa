@@ -19,6 +19,8 @@ class DouaaApp extends StatelessWidget {
         appBarTheme: const AppBarTheme(
           centerTitle: true,
           elevation: 0,
+          backgroundColor: Color(0xFFEBFFFD),
+          surfaceTintColor: Colors.transparent,
         ),
         cardTheme: CardThemeData(
           elevation: 2,

@@ -6,6 +6,7 @@ class DouaaCard extends StatelessWidget {
   final bool showReference;
   final bool showTranslation;
   final VoidCallback onFavoriteToggle;
+  final VoidCallback? onEditTap;
   final VoidCallback? onTap;
   final VoidCallback? onDismissed;
 
@@ -15,6 +16,7 @@ class DouaaCard extends StatelessWidget {
     required this.showReference,
     required this.showTranslation,
     required this.onFavoriteToggle,
+    this.onEditTap,
     this.onTap,
     this.onDismissed,
   });
@@ -25,6 +27,8 @@ class DouaaCard extends StatelessWidget {
 
     final card = Card(
       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      color: const Color(0xFF84E6DD),
+      surfaceTintColor: Colors.transparent,
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(12),
@@ -104,20 +108,34 @@ class DouaaCard extends StatelessWidget {
 
               const SizedBox(height: 8),
 
-              // Favorite button
-              Align(
-                alignment: Alignment.centerRight,
-                child: IconButton(
-                  icon: Icon(
-                    douaa.isFavorite ? Icons.favorite : Icons.favorite_outline,
-                    color: douaa.isFavorite
-                        ? Colors.red
-                        : colorScheme.onSurfaceVariant,
+              // Edit (left) and Favorite (right) buttons
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  if (onEditTap != null)
+                    IconButton(
+                      icon: Icon(
+                        Icons.edit_outlined,
+                        color: colorScheme.onSurfaceVariant,
+                      ),
+                      onPressed: onEditTap,
+                      tooltip: 'Modifier',
+                    )
+                  else
+                    const SizedBox.shrink(),
+                  IconButton(
+                    icon: Icon(
+                      douaa.isFavorite ? Icons.favorite : Icons.favorite_outline,
+                      color: douaa.isFavorite
+                          ? Colors.red
+                          : colorScheme.onSurfaceVariant,
+                    ),
+                    onPressed: onFavoriteToggle,
+                    tooltip: douaa.isFavorite
+                        ? 'Retirer des favoris'
+                        : 'Ajouter aux favoris',
                   ),
-                  onPressed: onFavoriteToggle,
-                  tooltip:
-                      douaa.isFavorite ? 'Retirer des favoris' : 'Ajouter aux favoris',
-                ),
+                ],
               ),
             ],
           ),

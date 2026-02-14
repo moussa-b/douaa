@@ -15,7 +15,17 @@ class SettingsScreen extends ConsumerWidget {
       appBar: AppBar(
         title: const Text('Paramètres'),
       ),
-      body: ListView(
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Color(0xFFEBFFFD), Colors.white],
+          ),
+        ),
+        child: ListView(
         children: [
           const SizedBox(height: 8),
 
@@ -105,6 +115,7 @@ class SettingsScreen extends ConsumerWidget {
 
           const SizedBox(height: 32),
         ],
+        ),
       ),
     );
   }
