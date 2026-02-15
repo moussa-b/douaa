@@ -76,3 +76,25 @@ See `specs/specs.md` for the full specification and `assets/README.txt` for how 
 3. Run with `flutter run` (or your target device).
 
 For more on Flutter: [documentation](https://docs.flutter.dev/).
+
+---
+
+## Build commands
+
+**Clean** — Remove build artifacts and caches. Run before a fresh build if you hit odd build issues. After this, run `flutter pub get` before building again.
+
+```bash
+flutter clean
+```
+
+**APK** — Build a release APK (output: `build/app/outputs/flutter-apk/app-release.apk`).
+
+```bash
+flutter build apk --release --split-per-abi
+```
+
+**App Bundle** — Build an Android App Bundle for Play Store (output: `build/app/outputs/bundle/release/app-release.aab`).
+
+```bash
+flutter build appbundle --release
+```
