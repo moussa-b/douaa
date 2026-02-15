@@ -50,13 +50,13 @@ class DouaaCard extends StatelessWidget {
                         vertical: 4,
                       ),
                       decoration: BoxDecoration(
-                        color: colorScheme.tertiaryContainer,
+                        color: const Color(0xFFF0F0F0),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Text(
                         douaa.subCategoryName!,
                         style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                              color: colorScheme.onTertiaryContainer,
+                              color: colorScheme.onSurfaceVariant,
                             ),
                       ),
                     ),
