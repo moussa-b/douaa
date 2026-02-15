@@ -59,7 +59,6 @@ class _FavoritesScreenState extends ConsumerState<FavoritesScreen> {
                 decoration: InputDecoration(
                   hintText: 'Rechercher une catégorie…',
                   filled: true,
-                  fillColor: Theme.of(context).colorScheme.surfaceContainerLow,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(24),
                   ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'screens/app_shell.dart';
 
 const Color _kSecondaryColor = Color(0xFF0F3057);
+const Color _kInputFillColor = Color(0xFFFAFAFA); // Very light grey for form fields
 
 class DouaaApp extends StatelessWidget {
   const DouaaApp({super.key});
@@ -76,6 +77,7 @@ class DouaaApp extends StatelessWidget {
             borderSide: const BorderSide(color: _kSecondaryColor, width: 2),
           ),
           filled: true,
+          fillColor: _kInputFillColor,
         ),
       ),
       home: const AppShell(),

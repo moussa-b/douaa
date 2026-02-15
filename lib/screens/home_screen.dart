@@ -60,7 +60,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 decoration: InputDecoration(
                   hintText: 'Rechercher une catégorie…',
                   filled: true,
-                  fillColor: Theme.of(context).colorScheme.surfaceContainerLow,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(24),
                   ),
