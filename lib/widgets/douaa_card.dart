@@ -72,6 +72,7 @@ class DouaaCard extends StatelessWidget {
                         fontSize: 20,
                         height: 1.8,
                         fontWeight: FontWeight.w500,
+                        fontFamily: 'ScheherazadeNew',
                       ),
                 ),
               ),

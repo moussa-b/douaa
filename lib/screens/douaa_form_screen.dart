@@ -114,7 +114,6 @@ class _DouaaFormScreenState extends ConsumerState<DouaaFormScreen> {
                 style: const TextStyle(
                   fontSize: 18,
                   height: 1.8,
-                  fontFamily: 'ScheherazadeNew',
                 ),
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {

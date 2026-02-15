@@ -49,7 +49,7 @@ class CategoryCard extends StatelessWidget {
                         ?.copyWith(
                           color: colorScheme.onPrimaryContainer,
                           fontWeight: FontWeight.w600,
-                          fontSize: 18,
+                          fontSize: 14,
                         ),
                     textAlign: TextAlign.center,
                   ),
@@ -67,7 +67,7 @@ class CategoryCard extends StatelessWidget {
                                   ?.copyWith(
                                     color: colorScheme.onPrimaryContainer
                                         .withAlpha(180),
-                                    fontSize: 11,
+                                    fontSize: 10,
                                   ),
                               textAlign: TextAlign.center,
                             ),
@@ -80,7 +80,7 @@ class CategoryCard extends StatelessWidget {
                                   ?.copyWith(
                                     color: colorScheme.onPrimaryContainer
                                         .withAlpha(180),
-                                    fontSize: 11,
+                                    fontSize: 10,
                                   ),
                               textAlign: TextAlign.center,
                             ),
