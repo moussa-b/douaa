@@ -13,9 +13,12 @@ class DouaaApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF1B5E20), // Deep green
+          seedColor: const Color(0xFF1B5E20),
           brightness: Brightness.light,
-        ).copyWith(secondary: _kSecondaryColor),
+        ).copyWith(
+          primary: _kSecondaryColor,
+          secondary: _kSecondaryColor,
+        ),
         useMaterial3: true,
         appBarTheme: const AppBarTheme(
           centerTitle: true,
@@ -67,6 +70,10 @@ class DouaaApp extends StatelessWidget {
         inputDecorationTheme: InputDecorationTheme(
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: const BorderSide(color: _kSecondaryColor, width: 2),
           ),
           filled: true,
         ),
