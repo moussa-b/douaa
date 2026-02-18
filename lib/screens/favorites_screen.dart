@@ -192,6 +192,7 @@ class _FavoritesScreenState extends ConsumerState<FavoritesScreen> {
                   isGrid: true,
                   subCategoryCount: c?.subCount,
                   douaaCount: c?.douaaCount,
+                  invokedCount: c?.invokedCount,
                   onTap: () => _openCategory(
                     context,
                     category.id!,
@@ -213,6 +214,7 @@ class _FavoritesScreenState extends ConsumerState<FavoritesScreen> {
                 isGrid: false,
                 subCategoryCount: c?.subCount,
                 douaaCount: c?.douaaCount,
+                invokedCount: c?.invokedCount,
                 onTap: () => _openCategory(
                   context,
                   category.id!,

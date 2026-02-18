@@ -75,15 +75,3 @@ flutter:
     - family: ScheherazadeNew
       fonts:
         - asset: assets/fonts/ScheherazadeNew-Regular.ttf
-#    - family: UthmanTNB
-#      fonts:
-#        - asset: assets/fonts/UthmanTNB_v2-0.ttf
-#    - family: UthmanTN
-#      fonts:
-#        - asset: assets/fonts/UthmanTN_v2-0.ttf
-#    - family: Lateef
-#      fonts:
-#        - asset: assets/fonts/Lateef-4ePB.ttf
-#    - family: KFGQPCUthmanicScriptHAFS
-#      fonts:
-#        - asset: assets/fonts/KFGQPC Uthmanic Script HAFS Regular.otf

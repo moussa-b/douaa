@@ -10,14 +10,14 @@ final categoryListProvider =
 
 final categoryCountsProvider =
     AsyncNotifierProvider<CategoryCountsNotifier,
-        Map<int, ({int subCount, int douaaCount})>>(CategoryCountsNotifier.new);
+        Map<int, ({int subCount, int douaaCount, int invokedCount})>>(CategoryCountsNotifier.new);
 
 class CategoryCountsNotifier
-    extends AsyncNotifier<Map<int, ({int subCount, int douaaCount})>> {
+    extends AsyncNotifier<Map<int, ({int subCount, int douaaCount, int invokedCount})>> {
   final _db = DatabaseHelper();
 
   @override
-  FutureOr<Map<int, ({int subCount, int douaaCount})>> build() async {
+  FutureOr<Map<int, ({int subCount, int douaaCount, int invokedCount})>> build() async {
     return await _db.getCategoryCounts();
   }
 }

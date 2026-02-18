@@ -206,6 +206,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   isGrid: true,
                   subCategoryCount: c?.subCount,
                   douaaCount: c?.douaaCount,
+                  invokedCount: c?.invokedCount,
                   onTap: () => _openCategory(context, category.id!, category.name),
                   onLongPress: () =>
                       _showDeleteDialog(context, ref, category.id!, category.name),
@@ -225,6 +226,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 isGrid: false,
                 subCategoryCount: c?.subCount,
                 douaaCount: c?.douaaCount,
+                invokedCount: c?.invokedCount,
                 onTap: () => _openCategory(context, category.id!, category.name),
                 onLongPress: () =>
                     _showDeleteDialog(context, ref, category.id!, category.name),

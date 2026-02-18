@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import '../database/database_helper.dart';
+import '../providers/category_provider.dart';
 import '../providers/douaa_provider.dart';
 import '../providers/settings_provider.dart';
 
@@ -170,6 +171,7 @@ class SettingsScreen extends ConsumerWidget {
     if (context.mounted && confirmed == true) {
       await DatabaseHelper().resetAllReadCounts();
       ref.invalidate(douaaListProvider);
+      ref.invalidate(categoryCountsProvider);
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
