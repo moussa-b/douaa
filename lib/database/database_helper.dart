@@ -22,7 +22,7 @@ class DatabaseHelper {
     return _database!;
   }
 
-  static const int _dbVersion = 3;
+  static const int _dbVersion = 1;
 
   Future<Database> _initDatabase() async {
     final dbDir = await getDatabasesPath();
@@ -59,26 +59,7 @@ class DatabaseHelper {
     await db.execute('PRAGMA foreign_keys = ON');
   }
 
-  Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
-    if (oldVersion < 2) {
-      try {
-        await db.execute(
-          'ALTER TABLE category ADD COLUMN sort_order INTEGER',
-        );
-      } catch (_) {
-        // Column may already exist (e.g. from asset DB)
-      }
-    }
-    if (oldVersion < 3) {
-      try {
-        await db.execute(
-          'ALTER TABLE douaa ADD COLUMN read_count INTEGER DEFAULT 0',
-        );
-      } catch (_) {
-        // Column may already exist (e.g. from asset DB)
-      }
-    }
-  }
+  Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {}
 
   Future<void> _onCreate(Database db, int version) async {
     await db.execute('''
@@ -197,6 +178,12 @@ class DatabaseHelper {
 
   Future<int> insertSubCategory(SubCategory subCategory) async {
     final db = await database;
+    if (subCategory.categoryId == 0) {
+      throw Exception(
+        'Cannot add subcategory: no category selected. '
+        'Subcategories must belong to an existing category.',
+      );
+    }
     return await db.insert('sub_category', subCategory.toMap());
   }
 
