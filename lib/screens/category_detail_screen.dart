@@ -158,23 +158,33 @@ class _CategoryDetailScreenState extends ConsumerState<CategoryDetailScreen> {
       itemCount: douaaList.length,
       itemBuilder: (context, index) {
         final douaa = douaaList[index];
+        final notifier = ref.read(douaaListProvider(widget.categoryId).notifier);
         return DouaaCard(
           douaa: douaa,
           showReference: settings.showReference,
           showTranslation: settings.showTranslation,
           onFavoriteToggle: () async {
-            await ref
-                .read(douaaListProvider(widget.categoryId).notifier)
-                .toggleFavorite(douaa.id!, !douaa.isFavorite);
+            await notifier.toggleFavorite(douaa.id!, !douaa.isFavorite);
             if (widget.favoritesOnly) {
               await _loadFavorites();
             }
           },
           onEditTap: () => _openDouaaForm(context, douaa: douaa),
+          onDecrementCount: () async {
+            final newCount = (douaa.readCount - 1).clamp(0, 0x7FFFFFFF);
+            await notifier.updateReadCount(douaa.id!, newCount);
+            if (widget.favoritesOnly) {
+              await _loadFavorites();
+            }
+          },
+          onIncrementCount: () async {
+            await notifier.updateReadCount(douaa.id!, douaa.readCount + 1);
+            if (widget.favoritesOnly) {
+              await _loadFavorites();
+            }
+          },
           onDismissed: () async {
-            await ref
-                .read(douaaListProvider(widget.categoryId).notifier)
-                .deleteDouaa(douaa.id!);
+            await notifier.deleteDouaa(douaa.id!);
             if (widget.favoritesOnly) {
               await _loadFavorites();
             }

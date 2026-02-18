@@ -293,6 +293,7 @@ class _DouaaFormScreenState extends ConsumerState<DouaaFormScreen> {
             ? null
             : _tagsController.text.trim(),
         isFavorite: widget.douaa?.isFavorite ?? false,
+        readCount: widget.douaa?.readCount ?? 0,
       );
 
       if (_isEditing) {

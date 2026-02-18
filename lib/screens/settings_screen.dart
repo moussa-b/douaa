@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import '../database/database_helper.dart';
+import '../providers/douaa_provider.dart';
 import '../providers/settings_provider.dart';
 
 class SettingsScreen extends ConsumerWidget {
@@ -86,6 +88,29 @@ class SettingsScreen extends ConsumerWidget {
 
           const Divider(indent: 16, endIndent: 16),
 
+          // Data section
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            child: Text(
+              'Données',
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    color: const Color(0xFF0F3057),
+                    fontWeight: FontWeight.w600,
+                  ),
+            ),
+          ),
+
+          ListTile(
+            leading: const Icon(Icons.restart_alt),
+            title: const Text('Réinitialiser les compteurs'),
+            subtitle: const Text(
+              'Remettre tous les compteurs de lecture à zéro',
+            ),
+            onTap: () => _showResetCountersConfirmation(context, ref),
+          ),
+
+          const Divider(indent: 16, endIndent: 16),
+
           // About section
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -117,5 +142,41 @@ class SettingsScreen extends ConsumerWidget {
         ),
       ),
     );
+  }
+
+  static Future<void> _showResetCountersConfirmation(
+    BuildContext context,
+    WidgetRef ref,
+  ) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Réinitialiser les compteurs'),
+        content: const Text(
+          'Êtes-vous sûr de vouloir remettre tous les compteurs de lecture à zéro ?',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: const Text('Annuler'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: const Text('Réinitialiser'),
+          ),
+        ],
+      ),
+    );
+    if (context.mounted && confirmed == true) {
+      await DatabaseHelper().resetAllReadCounts();
+      ref.invalidate(douaaListProvider);
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Compteurs réinitialisés'),
+          ),
+        );
+      }
+    }
   }
 }

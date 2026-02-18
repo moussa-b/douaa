@@ -37,6 +37,12 @@ class DouaaListNotifier extends AsyncNotifier<List<Douaa>> {
     ref.invalidate(categoryCountsProvider);
   }
 
+  Future<void> updateReadCount(int douaaId, int newCount) async {
+    if (newCount < 0) return;
+    await _db.updateDouaaReadCount(douaaId, newCount);
+    state = AsyncData(await _db.getDouaaByCategoryId(categoryId));
+  }
+
   Future<void> deleteDouaa(int id) async {
     await _db.deleteDouaa(id);
     state = AsyncData(await _db.getDouaaByCategoryId(categoryId));

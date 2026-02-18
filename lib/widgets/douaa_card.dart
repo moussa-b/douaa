@@ -7,6 +7,8 @@ class DouaaCard extends StatelessWidget {
   final bool showTranslation;
   final VoidCallback onFavoriteToggle;
   final VoidCallback? onEditTap;
+  final VoidCallback? onIncrementCount;
+  final VoidCallback? onDecrementCount;
   final VoidCallback? onTap;
   final VoidCallback? onDismissed;
 
@@ -17,6 +19,8 @@ class DouaaCard extends StatelessWidget {
     required this.showTranslation,
     required this.onFavoriteToggle,
     this.onEditTap,
+    this.onIncrementCount,
+    this.onDecrementCount,
     this.onTap,
     this.onDismissed,
   });
@@ -109,10 +113,11 @@ class DouaaCard extends StatelessWidget {
 
               const SizedBox(height: 8),
 
-              // Edit (left) and Favorite (right) buttons
+              // Edit (left), count +/- (center), Favorite (right)
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  // Far left: edit
                   if (onEditTap != null)
                     IconButton(
                       icon: Icon(
@@ -123,7 +128,44 @@ class DouaaCard extends StatelessWidget {
                       tooltip: 'Modifier',
                     )
                   else
+                    const SizedBox(width: 48, height: 48),
+                  // Center: decrease / increase count
+                  if (onDecrementCount != null && onIncrementCount != null)
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                          iconSize: 26,
+                          icon: Icon(
+                            Icons.remove_circle_outline,
+                            color: colorScheme.onSurfaceVariant,
+                          ),
+                          onPressed: onDecrementCount,
+                          tooltip: 'Diminuer le compteur',
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 4),
+                          child: Text(
+                            '${douaa.readCount}',
+                            style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                                  color: colorScheme.onSurfaceVariant,
+                                ),
+                          ),
+                        ),
+                        IconButton(
+                          iconSize: 26,
+                          icon: Icon(
+                            Icons.add_circle_outline,
+                            color: colorScheme.onSurfaceVariant,
+                          ),
+                          onPressed: onIncrementCount,
+                          tooltip: 'Augmenter le compteur',
+                        ),
+                      ],
+                    )
+                  else
                     const SizedBox.shrink(),
+                  // Far right: favorite
                   IconButton(
                     icon: Icon(
                       douaa.isFavorite ? Icons.favorite : Icons.favorite_outline,

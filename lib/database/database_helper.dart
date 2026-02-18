@@ -22,7 +22,7 @@ class DatabaseHelper {
     return _database!;
   }
 
-  static const int _dbVersion = 2;
+  static const int _dbVersion = 3;
 
   Future<Database> _initDatabase() async {
     final dbDir = await getDatabasesPath();
@@ -69,6 +69,15 @@ class DatabaseHelper {
         // Column may already exist (e.g. from asset DB)
       }
     }
+    if (oldVersion < 3) {
+      try {
+        await db.execute(
+          'ALTER TABLE douaa ADD COLUMN read_count INTEGER DEFAULT 0',
+        );
+      } catch (_) {
+        // Column may already exist (e.g. from asset DB)
+      }
+    }
   }
 
   Future<void> _onCreate(Database db, int version) async {
@@ -99,6 +108,7 @@ class DatabaseHelper {
         reference TEXT,
         tags TEXT,
         is_favorite INTEGER DEFAULT 0,
+        read_count INTEGER DEFAULT 0,
         FOREIGN KEY (category_id) REFERENCES category (id) ON DELETE CASCADE,
         FOREIGN KEY (sub_category_id) REFERENCES sub_category (id) ON DELETE SET NULL
       )
@@ -246,6 +256,21 @@ class DatabaseHelper {
   Future<int> deleteDouaa(int id) async {
     final db = await database;
     return await db.delete('douaa', where: 'id = ?', whereArgs: [id]);
+  }
+
+  Future<int> updateDouaaReadCount(int douaaId, int readCount) async {
+    final db = await database;
+    return await db.update(
+      'douaa',
+      {'read_count': readCount},
+      where: 'id = ?',
+      whereArgs: [douaaId],
+    );
+  }
+
+  Future<void> resetAllReadCounts() async {
+    final db = await database;
+    await db.rawUpdate('UPDATE douaa SET read_count = 0');
   }
 
   // ── Favorites ──

@@ -7,6 +7,7 @@ class Douaa {
   final String? reference;
   final String? tags;
   final bool isFavorite;
+  final int readCount;
   final String? subCategoryName; // From LEFT JOIN, not stored
 
   const Douaa({
@@ -18,6 +19,7 @@ class Douaa {
     this.reference,
     this.tags,
     this.isFavorite = false,
+    this.readCount = 0,
     this.subCategoryName,
   });
 
@@ -31,6 +33,7 @@ class Douaa {
       reference: map['reference'] as String?,
       tags: map['tags'] as String?,
       isFavorite: (map['is_favorite'] as int? ?? 0) == 1,
+      readCount: map['read_count'] as int? ?? 0,
       subCategoryName: map['sub_category_name'] as String?,
     );
   }
@@ -45,6 +48,7 @@ class Douaa {
       'reference': reference,
       'tags': tags,
       'is_favorite': isFavorite ? 1 : 0,
+      'read_count': readCount,
     };
   }
 
@@ -57,6 +61,7 @@ class Douaa {
     String? reference,
     String? tags,
     bool? isFavorite,
+    int? readCount,
     String? subCategoryName,
   }) {
     return Douaa(
@@ -68,6 +73,7 @@ class Douaa {
       reference: reference ?? this.reference,
       tags: tags ?? this.tags,
       isFavorite: isFavorite ?? this.isFavorite,
+      readCount: readCount ?? this.readCount,
       subCategoryName: subCategoryName ?? this.subCategoryName,
     );
   }
