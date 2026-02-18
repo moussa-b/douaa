@@ -227,7 +227,7 @@ class DatabaseHelper {
       FROM douaa d
       LEFT JOIN sub_category sc ON d.sub_category_id = sc.id
       WHERE d.category_id = ?
-      ORDER BY d.id DESC
+      ORDER BY d.id ASC
     ''', [categoryId]);
     return maps.map((map) => Douaa.fromMap(map)).toList();
   }
@@ -283,7 +283,7 @@ class DatabaseHelper {
       FROM douaa d
       LEFT JOIN sub_category sc ON d.sub_category_id = sc.id
       WHERE d.category_id = ? AND d.is_favorite = 1
-      ORDER BY d.id DESC
+      ORDER BY d.id ASC
     ''', [categoryId]);
     return maps.map((map) => Douaa.fromMap(map)).toList();
   }
