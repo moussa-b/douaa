@@ -22,6 +22,8 @@ class DatabaseHelper {
     return _database!;
   }
 
+  static const int _dbVersion = 2;
+
   Future<Database> _initDatabase() async {
     final dbDir = await getDatabasesPath();
     final path = '$dbDir/douaa.db';
@@ -38,7 +40,7 @@ class DatabaseHelper {
         // Asset not found (no douaa.db in assets/) or load error — create empty DB
         return await openDatabase(
           path,
-          version: 1,
+          version: _dbVersion,
           onCreate: _onCreate,
           onConfigure: _onConfigure,
         );
@@ -47,8 +49,9 @@ class DatabaseHelper {
 
     return await openDatabase(
       path,
-      version: 1,
+      version: _dbVersion,
       onConfigure: _onConfigure,
+      onUpgrade: _onUpgrade,
     );
   }
 
@@ -56,11 +59,24 @@ class DatabaseHelper {
     await db.execute('PRAGMA foreign_keys = ON');
   }
 
+  Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
+    if (oldVersion < 2) {
+      try {
+        await db.execute(
+          'ALTER TABLE category ADD COLUMN sort_order INTEGER',
+        );
+      } catch (_) {
+        // Column may already exist (e.g. from asset DB)
+      }
+    }
+  }
+
   Future<void> _onCreate(Database db, int version) async {
     await db.execute('''
       CREATE TABLE category (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT NOT NULL
+        name TEXT NOT NULL,
+        sort_order INTEGER
       )
     ''');
 
@@ -98,8 +114,35 @@ class DatabaseHelper {
 
   Future<List<Category>> getCategories() async {
     final db = await database;
-    final maps = await db.query('category', orderBy: 'id DESC');
+    final maps = await db.rawQuery(
+      'SELECT * FROM category ORDER BY COALESCE(sort_order, 999999) ASC, id ASC',
+    );
     return maps.map((map) => Category.fromMap(map)).toList();
+  }
+
+  Future<int> getMaxCategorySortOrder() async {
+    final db = await database;
+    final result = await db.rawQuery(
+      'SELECT COALESCE(MAX(sort_order), 0) AS max_order FROM category',
+    );
+    final maxOrder = result.first['max_order'];
+    if (maxOrder is int) return maxOrder;
+    if (maxOrder is num) return (maxOrder as num).toInt();
+    return 0;
+  }
+
+  Future<void> updateCategorySortOrders(List<int> categoryIdsInOrder) async {
+    final db = await database;
+    final batch = db.batch();
+    for (var i = 0; i < categoryIdsInOrder.length; i++) {
+      batch.update(
+        'category',
+        {'sort_order': i},
+        where: 'id = ?',
+        whereArgs: [categoryIdsInOrder[i]],
+      );
+    }
+    await batch.commit(noResult: true);
   }
 
   Future<int> updateCategory(Category category) async {
@@ -214,7 +257,7 @@ class DatabaseHelper {
       FROM category c
       INNER JOIN douaa d ON d.category_id = c.id
       WHERE d.is_favorite = 1
-      ORDER BY c.id DESC
+      ORDER BY COALESCE(c.sort_order, 999999) ASC, c.id ASC
     ''');
     return maps.map((map) => Category.fromMap(map)).toList();
   }

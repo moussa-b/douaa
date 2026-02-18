@@ -31,7 +31,17 @@ class CategoryListNotifier extends AsyncNotifier<List<Category>> {
   }
 
   Future<void> addCategory(String name) async {
-    await _db.insertCategory(Category(name: name));
+    final maxOrder = await _db.getMaxCategorySortOrder();
+    await _db.insertCategory(Category(name: name, sortOrder: maxOrder + 1));
+    state = AsyncData(await _db.getCategories());
+    ref.invalidate(favoriteCategoriesProvider);
+    ref.invalidate(categoryCountsProvider);
+  }
+
+  Future<void> reorderCategories(List<Category> ordered) async {
+    final ids = ordered.where((c) => c.id != null).map((c) => c.id!).toList();
+    if (ids.isEmpty) return;
+    await _db.updateCategorySortOrders(ids);
     state = AsyncData(await _db.getCategories());
     ref.invalidate(favoriteCategoriesProvider);
     ref.invalidate(categoryCountsProvider);

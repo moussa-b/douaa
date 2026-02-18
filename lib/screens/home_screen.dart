@@ -5,6 +5,7 @@ import '../providers/settings_provider.dart';
 import '../widgets/category_card.dart';
 import '../widgets/add_category_dialog.dart';
 import 'category_detail_screen.dart';
+import 'reorder_categories_screen.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -94,6 +95,18 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               icon: const Icon(Icons.search),
               tooltip: 'Rechercher par catégorie',
               onPressed: _startSearch,
+            ),
+          if (!_isSearching)
+            IconButton(
+              icon: const Icon(Icons.format_line_spacing),
+              tooltip: 'Réorganiser l\'ordre des catégories',
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute<void>(
+                    builder: (context) => const ReorderCategoriesScreen(),
+                  ),
+                );
+              },
             ),
           if (!_isSearching)
             IconButton(

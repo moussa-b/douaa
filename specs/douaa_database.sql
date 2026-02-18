@@ -1,6 +1,6 @@
 -- SQL Export
 -- Created by Querious (402014)
--- Created: 15 February 2026 at 17:43:19 CET
+-- Created: 18 February 2026 at 10:18:11 CET
 -- Encoding: Unicode (UTF-8)
 
 PRAGMA
@@ -33,6 +33,7 @@ CREATE TABLE "douaa"
     "reference"       TEXT    DEFAULT NULL,
     "tags"            TEXT    DEFAULT NULL,
     is_favorite       INTEGER DEFAULT 0,
+    "read_count"      INTEGER DEFAULT 0,
     FOREIGN KEY ("category_id") REFERENCES "category" ("id"),
     FOREIGN KEY ("sub_category_id") REFERENCES "sub_category" ("id")
 );
@@ -43,4 +44,4 @@ foreign_keys = ON;
 PRAGMA
 ignore_check_constraints = ON;
 
---  Export Finished: 15 February 2026 at 17:43:19 CET
+--  Export Finished: 18 February 2026 at 10:18:11 CET
